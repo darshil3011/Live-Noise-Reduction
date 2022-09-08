@@ -4,7 +4,7 @@ import streamlit as st
 #import tensorflow as tf
 #import matplotlib.pyplot as plt
 import numpy as np
-from scipy.io.wavfile import write
+#from scipy.io.wavfile import write
 import util_functions as ufs
 import time
 import torchaudio
@@ -40,8 +40,8 @@ if nav_choice == 'Home':
             with torch.no_grad():
                 denoised = model(wav[None])[0]
 
-            write(target_file, model.sample_rate, denoised.data.cpu().numpy())
-            #torchaudio.save('temp.wav', denoised.data.cpu(), model.sample_rate)
+            #write(target_file, model.sample_rate, denoised.data.cpu().numpy())
+            torchaudio.save('temp.wav', denoised.data.cpu(), model.sample_rate)
             
             
             #model = ufs.load_model(_path_to_model)  # call to the utility module to cache the model
@@ -63,7 +63,7 @@ if nav_choice == 'Home':
             #    write(_targe_file, 44100, preds)  # writing the output file to play
             
             st.success('Audio after noise removal')
-            st.audio(target_file)
+            st.audio(temp.wav)
             
             '''
 

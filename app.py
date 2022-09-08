@@ -26,7 +26,7 @@ _param_dict = {}  # Used for getting plot related information
 _path_to_model = 'utils/models/auto_encoders_for_noise_removal_production.h5'  # Path to pre-trained model
 _targe_file = 'utils/outputs/preds.wav'  # target file for storing model.output
 
-model = pretrained.dns64()
+model = pretrained.dns48()
 #model = 'model'
 
 if nav_choice == 'Home':
@@ -38,7 +38,7 @@ if nav_choice == 'Home':
         try:
         
             wav, sr = torchaudio.load(audio_sample)
-            wav = convert_audio(wav.cuda(), sr, model.sample_rate, model.chin)
+            wav = convert_audio(wav, sr, model.sample_rate, model.chin)
             st.info('model loaded - feeding data to model..')
             with torch.no_grad():
                 denoised = model(wav[None])[0]

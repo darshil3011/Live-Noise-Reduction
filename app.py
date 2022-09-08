@@ -16,7 +16,7 @@ from denoiser.dsp import convert_audio
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 st.title('Think Crisp - AI Noise Removal')
-st.subheader('Custom AI model to reduce background-noise from audio samples')
+st.subheader('Custom AI engine powered by Think In Bytes')
 
 # UI design
 

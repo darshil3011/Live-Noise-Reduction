@@ -39,12 +39,13 @@ if nav_choice == 'Home':
         
             wav, sr = torchaudio.load(audio_sample)
             wav = convert_audio(wav.cuda(), sr, model.sample_rate, model.chin)
+            st.info('model loaded - feeding data to model..')
             with torch.no_grad():
                 denoised = model(wav[None])[0]
-
+    
             #write(target_file, model.sample_rate, denoised.data.cpu().numpy())
             torchaudio.save('temp.wav', denoised.data.cpu(), model.sample_rate)
-            
+            st.info('model converted file !')
             
             #model = ufs.load_model(_path_to_model)  # call to the utility module to cache the model
             #audio = tf.audio.decode_wav(audio_sample.read(), desired_channels=1)

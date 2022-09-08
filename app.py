@@ -27,6 +27,7 @@ _path_to_model = 'utils/models/auto_encoders_for_noise_removal_production.h5'  #
 _targe_file = 'utils/outputs/preds.wav'  # target file for storing model.output
 
 model = pretrained.dns48()
+#model = dns48-11decc9d8e3f0998.th
 #model = 'model'
 
 if nav_choice == 'Home':
@@ -34,6 +35,9 @@ if nav_choice == 'Home':
 
     st.info('Upload your audio sample below')
     audio_sample = st.file_uploader('Audio Sample', ['wav'])  # Get audio sample as an input from users
+    st.info('Uploaded audio sample')
+    st.audio(audio_sample)
+            
     if audio_sample:
         try:
         
@@ -46,7 +50,7 @@ if nav_choice == 'Home':
             #write(target_file, model.sample_rate, denoised.data.cpu().numpy())
             torchaudio.save('temp.wav', denoised.data.cpu(), model.sample_rate)
             st.info('model converted file !')
-            
+            st.info(denoised.data.cpu().numpy().shape)
             #model = ufs.load_model(_path_to_model)  # call to the utility module to cache the model
             #audio = tf.audio.decode_wav(audio_sample.read(), desired_channels=1)
             # decoding audio waveform by using  tf.audio.decode_wav as a mono sound wave
@@ -55,8 +59,7 @@ if nav_choice == 'Home':
             #for i in range(100):
             #    time.sleep(0.001)
             #    prog.progress(i + 1)
-            st.info('Uploaded audio sample')
-            st.audio(audio_sample)
+            
             #with st.spinner('Wait for it...'):
             #    time.sleep(1)
             #    preds = model.predict(tf.expand_dims(audio.audio, 0))  # using this EagerTensor to suppress te noie

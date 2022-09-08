@@ -31,14 +31,16 @@ model = pretrained.dns48()
 #model = 'model'
 
 if nav_choice == 'Home':
-    #st.image('utils/images/header.jpg', width=450, height=500)
-
+  
     st.info('Upload your audio sample below')
     audio_sample = st.file_uploader('Audio Sample', ['wav'])  # Get audio sample as an input from users
-    st.info('Uploaded audio sample')
-    st.audio(audio_sample)
             
     if audio_sample:
+        
+        st.info('Uploaded audio sample')
+        st.audio(audio_sample)
+    
+        
         try:
         
             wav, sr = torchaudio.load(audio_sample)

@@ -26,8 +26,8 @@ _param_dict = {}  # Used for getting plot related information
 _path_to_model = 'utils/models/auto_encoders_for_noise_removal_production.h5'  # Path to pre-trained model
 _targe_file = 'utils/outputs/preds.wav'  # target file for storing model.output
 
-#model = pretrained.dns64().cuda()
-model = 'model'
+model = pretrained.dns64()
+#model = 'model'
 
 if nav_choice == 'Home':
     #st.image('utils/images/header.jpg', width=450, height=500)

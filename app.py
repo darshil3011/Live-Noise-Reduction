@@ -7,6 +7,7 @@ import numpy as np
 from scipy.io.wavfile import write
 import util_functions as ufs
 import time
+import torchaudio
 
 # Setting config option for deployment
 
@@ -29,29 +30,41 @@ if nav_choice == 'Home':
     audio_sample = st.file_uploader('Audio Sample', ['wav'])  # Get audio sample as an input from users
     if audio_sample:
         try:
-            prog = st.progress(0)
-            model = ufs.load_model(_path_to_model)  # call to the utility module to cache the model
-            audio = tf.audio.decode_wav(audio_sample.read(), desired_channels=1)
+        
+            model = pretrained.dns64().cuda()
+            wav, sr = torchaudio.load(audio_sample)
+            wav = convert_audio(wav.cuda(), sr, model.sample_rate, model.chin)
+            with torch.no_grad():
+                denoised = model(wav[None])[0]
+
+            write(target_file, model.sample_rate, denoised.data.cpu().numpy())
+            #torchaudio.save('temp.wav', denoised.data.cpu(), model.sample_rate)
+            
+            
+            #model = ufs.load_model(_path_to_model)  # call to the utility module to cache the model
+            #audio = tf.audio.decode_wav(audio_sample.read(), desired_channels=1)
             # decoding audio waveform by using  tf.audio.decode_wav as a mono sound wave
-            _param_dict.update({'audio_sample': audio.audio})
-            flag = 1
-            for i in range(100):
-                time.sleep(0.001)
-                prog.progress(i + 1)
+            #_param_dict.update({'audio_sample': audio.audio})
+            #flag = 1
+            #for i in range(100):
+            #    time.sleep(0.001)
+            #    prog.progress(i + 1)
             st.info('Uploaded audio sample')
             st.audio(audio_sample)
-            with st.spinner('Wait for it...'):
-                time.sleep(1)
-                preds = model.predict(tf.expand_dims(audio.audio, 0))  # using this EagerTensor to suppress te noie
-                preds = tf.reshape(preds, (-1, 1))
-                _param_dict.update({'predicted_outcomes': preds})
-                preds = np.array(preds)
-                write(_targe_file, 44100, preds)  # writing the output file to play
+            #with st.spinner('Wait for it...'):
+            #    time.sleep(1)
+            #    preds = model.predict(tf.expand_dims(audio.audio, 0))  # using this EagerTensor to suppress te noie
+            #    preds = tf.reshape(preds, (-1, 1))
+            #    _param_dict.update({'predicted_outcomes': preds})
+            #    preds = np.array(preds)
+            #    write(_targe_file, 44100, preds)  # writing the output file to play
+            
             st.success('Audio after noise removal')
-            st.audio(_targe_file)
+            st.audio(target_file)
+            
+            '''
 
             # Visual Representation of model's prediction using sync plots
-
             prediction_stats = st.checkbox('Prediction Plots')
             noise_rem = st.checkbox('Noise Removal Plots')
             if noise_rem:
@@ -71,6 +84,9 @@ if nav_choice == 'Home':
                          label='Noise suppressed audio output')
                 plt.legend()
                 st.pyplot()
-
+        
+        '''
+        
         except Exception as e:
             print(e, type(e))
+        

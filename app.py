@@ -26,15 +26,16 @@ _param_dict = {}  # Used for getting plot related information
 _path_to_model = 'utils/models/auto_encoders_for_noise_removal_production.h5'  # Path to pre-trained model
 _targe_file = 'utils/outputs/preds.wav'  # target file for storing model.output
 
+model = pretrained.dns64().cuda()
+
 if nav_choice == 'Home':
-    st.image('utils/images/header.jpg', width=450, height=500)
+    #st.image('utils/images/header.jpg', width=450, height=500)
 
     st.info('Upload your audio sample below')
     audio_sample = st.file_uploader('Audio Sample', ['wav'])  # Get audio sample as an input from users
     if audio_sample:
         try:
         
-            model = pretrained.dns64().cuda()
             wav, sr = torchaudio.load(audio_sample)
             wav = convert_audio(wav.cuda(), sr, model.sample_rate, model.chin)
             with torch.no_grad():

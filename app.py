@@ -24,7 +24,7 @@ nav_choice = st.sidebar.radio('Navigation', ['Home'], index=0)
 
 _param_dict = {}  # Used for getting plot related information
 _path_to_model = 'utils/models/auto_encoders_for_noise_removal_production.h5'  # Path to pre-trained model
-_targe_file = 'utils/outputs/preds.wav'  # target file for storing model.output
+target_file = 'utils/outputs/preds.wav'  # target file for storing model.output
 
 model = pretrained.dns48()
 #model = dns48-11decc9d8e3f0998.th
@@ -48,7 +48,7 @@ if nav_choice == 'Home':
                 denoised = model(wav[None])[0]
     
             #write(target_file, model.sample_rate, denoised.data.cpu().numpy())
-            torchaudio.save('temp.wav', denoised.data.cpu(), model.sample_rate)
+            torchaudio.save(target_file, denoised.data.cpu(), model.sample_rate)
             st.info('model converted file !')
             st.info(denoised.data.cpu().numpy().shape)
             #model = ufs.load_model(_path_to_model)  # call to the utility module to cache the model
@@ -69,7 +69,7 @@ if nav_choice == 'Home':
             #    write(_targe_file, 44100, preds)  # writing the output file to play
             
             st.success('Audio after noise removal')
-            st.audio(temp.wav)
+            st.audio(target_file)
             
             '''
 
